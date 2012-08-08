@@ -20,3 +20,7 @@ var myScrollView = new InfiniScroll({
 ```
 
 Just add views to your InfiniScroll instance via ```myScrollView.add(myView)``` and it will re-adjust its events.
+
+## This is brand new
+
+So, we haven't tested it out in Android quite yet. We'll get there.
