@@ -41,6 +41,7 @@
      * - **onNewHeight**  {Function}  - Called when a new height for the scroll view has been calculated
      * - **onBottom**     {Function}  - Called when scrolled within the triggerAt option
      * - **triggerAt**    {Unit}      - (percent/dp) When to trigger the 'scrollToBottom' event
+     *                                  Note: when using device pixel units, it represents pixels from the bottom
      */
     options: {
       onNewHeight: function(height, myInfiniScroll){}

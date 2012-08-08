@@ -10,6 +10,9 @@ var myScrollView = new InfiniScroll({
 }, {
   // trigger the scrollToEnd event at 82% of the way down
   triggerAt: '82%'
+
+  // You could also specify triggerAt in device pixels from the bottom of the scroll view
+  // triggerAt: '250dp'
   // Function to call when the event has occurredd
 , onScrollToEnd: function(){
     fetchNewData(function(data){
