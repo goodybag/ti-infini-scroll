@@ -1,32 +1,28 @@
-(function(){
+(function () {
   var $ui = Titanium.UI;
 
-  var constructor = function(viewOptions, options){
+  var constructor = function (viewOptions, options) {
     var self = this;
-    for (var key in viewOptions){
-      this.viewOptions[key] = viewOptions[key];
-    }
-
-    for (var key in options){
-      this.options[key] = options[key];
-    }
-
+    
+    for (var key in viewOptions) this.viewOptions[key] = viewOptions[key];
+    for (var key in options) this.options[key] = options[key];
     this.view = $ui.createScrollView(this.viewOptions);
     this.scrollEndTriggered = false;
 
     // Cache whether or not this a percentage we're dealing with and the trigger ratio
-    if (this.triggerIsPercentage = this.options.triggerAt.indexOf('%')){
+    if (this.triggerIsPercentage = this.options.triggerAt.indexOf('%')) {
       this.triggerRatio = parseFloat(this.options.triggerAt) / 100;
-    }else{
+    } else {
       this.triggerAt = parseInt(this.options.triggerAt);
     }
 
     // Apparently fn.bind isn't working so we'll curry it
-    this.onPostLayoutCurry = function(e){ self._onPostLayout(e); };
-    this.onScrollCurry = function(e){ self._onScroll(e); };
+    this.onPostLayoutCurry = function (e) { self._onPostLayout(e); };
+    this.onScrollCurry = function (e) { self._onScroll(e); };
     this.view.addEventListener('postlayout', this.onPostLayoutCurry);
     this.view.addEventListener('scroll', this.onScrollCurry);
   };
+  
   constructor.prototype = {
     /**
      * Options for the base view (ScrollView)
@@ -44,9 +40,9 @@
      *                                  Note: when using device pixel units, it represents pixels from the bottom
      */
     options: {
-      onNewHeight: function(height, myInfiniScroll){}
-    , onBottom: function(myInfiniScroll){}
-    , triggerAt:   '90%'
+      onNewHeight: function (height, myInfiniScroll) {},
+      onBottom: function (myInfiniScroll) {},
+      triggerAt:   '90%'
     },
 
     /**
@@ -83,18 +79,18 @@
      */
     view: null,
 
-
-
     /**
      * Proxy Methods
      */
-    add: function(view){
+    add: function (view) {
       this.view.add(view);
     },
-    hide: function(){
+    
+    hide: function () {
       this.view.hide();
     },
-    show: function(){
+    
+    show: function () {
       this.view.show();
     },
 
@@ -102,20 +98,19 @@
      * Re-calculates the new triggerAt property if needed and calls user onNewHeight function
      * Also re-attaches the onscroll event
      */
-    triggerNewHeight: function(){
+    triggerNewHeight: function () {
       var self = this;
-      if (this.triggerIsPercentage){
-        this.triggerAt = this.height * this.triggerRatio;
-      }else{
-        this.triggerAt = this.height - this.options.triggerAt;
-      }
+      
+      this.triggerAt = (this.triggerIsPercentage) ? 
+      this.height * this.triggerRatio : 
+      this.height - this.options.triggerAt;
       this.calculatingHeight = false;
       this.scrollEndTriggered = false;
       this.view.addEventListener('scroll', this.onScrollCurry);
       this.options.onNewHeight(this.height, this);
     },
 
-    triggerScrollEnd: function(scrollY){
+    triggerScrollEnd: function (scrollY) {
       this.options.onScrollToEnd(scrollY, this);
     },
 
@@ -124,35 +119,42 @@
      * Returns the caclulation state of the scroll
      * @return {Boolean}
      */
-    isCalculatingHeight: function(){
+    isCalculatingHeight: function () {
       return this.calculatingHeight;
     },
 
     /**
-     * @private _postLayout
      * Bound to the postlayout even on the Base View
-     * Udates the height and nextChild property when a layout change occurs
+     * Updates the height and nextChild property when a layout change occurs
+     * @private
      */
-    _onPostLayout: function(e){
-      if (e.source === this.view && this.view.children.length > 0){
+    _onPostLayout: function (e) {
+      if (e.source === this.view && this.view.children.length > 0) {
         this.calculatingHeight = true;
         var children = this.view.children;
-        for (var i = this.nextChild || 0, child; i < children.length; i++){
+        
+        for (var i = this.nextChild || 0, child; i < children.length; i++) {
           child = children[i];
           this.height += parseInt(child.getSize().height) || 0;
           this.height += parseInt(child.getTop())         || 0;
           this.height += parseInt(child.getBottom())      || 0;
         }
+        
         this.nextChild = children.length;
         this.triggerNewHeight();
       }
     },
 
-    _onScroll: function(e){
+    /**
+     * Checks against scroll events and triggers and removes when necessary, 
+     * such as when scrolling happens during handler removal or end triggering.
+     * @private
+     */
+    _onScroll: function (e) {
       if (this.scrollEndTriggered) return;
       // In case there was some scrolling while the handler was being removed
       if (this.isCalculatingHeight()) return;
-      if (e.y >= this.triggerAt - this.view.size.height){
+      if (e.y >= this.triggerAt - this.view.size.height) {
         this.scorllEndTriggered = true;
         this.view.removeEventListener('scroll', this.onScrollCurry);
         this.triggerScrollEnd(e.y);
