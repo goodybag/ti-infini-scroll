@@ -2,7 +2,7 @@
   var $ui = Titanium.UI;
 
   var constructor = function (viewOptions, options) {
-    var self = this;
+    var $this = this;
     
     for (var key in viewOptions) this.viewOptions[key] = viewOptions[key];
     for (var key in options) this.options[key] = options[key];
@@ -17,8 +17,8 @@
     }
 
     // Apparently fn.bind isn't working so we'll curry it
-    this.onPostLayoutCurry = function (e) { self._onPostLayout(e); };
-    this.onScrollCurry = function (e) { self._onScroll(e); };
+    this.onPostLayoutCurry = function (e) { $this._onPostLayout(e); };
+    this.onScrollCurry = function (e) { $this._onScroll(e); };
     this.view.addEventListener('postlayout', this.onPostLayoutCurry);
     this.view.addEventListener('scroll', this.onScrollCurry);
   };
@@ -99,8 +99,6 @@
      * Also re-attaches the onscroll event
      */
     triggerNewHeight: function () {
-      var self = this;
-      
       this.triggerAt = (this.triggerIsPercentage) ? 
       this.height * this.triggerRatio : 
       this.height - this.options.triggerAt;
