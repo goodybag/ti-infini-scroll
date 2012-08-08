@@ -105,6 +105,8 @@
       var self = this;
       if (this.triggerIsPercentage){
         this.triggerAt = this.height * this.triggerRatio;
+      }else{
+        this.triggerAt = this.height - this.options.triggerAt;
       }
       this.calculatingHeight = false;
       this.scrollEndTriggered = false;
