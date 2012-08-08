@@ -91,11 +91,11 @@
     add: function(view){
       this.view.add(view);
     },
-    hide: function(view){
-      this.view.hide(view);
+    hide: function(){
+      this.view.hide();
     },
-    show: function(view){
-      this.view.show(view);
+    show: function(){
+      this.view.show();
     },
 
     /**
