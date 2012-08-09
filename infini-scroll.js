@@ -83,15 +83,19 @@
      * Proxy Methods
      */
     add: function (view) {
-      this.view.add(view);
+      return this.view.add(view);
     },
 
     hide: function () {
-      this.view.hide();
+      return this.view.hide();
     },
 
     show: function () {
-      this.view.show();
+      return this.view.show();
+    },
+
+    scrollTo: function (x, y) {
+      return this.view.scrollTo(x, y);
     },
 
     /**
@@ -160,5 +164,5 @@
     }
   };
 
-  module.exports = constructor;
+  exports = constructor;
 })();
