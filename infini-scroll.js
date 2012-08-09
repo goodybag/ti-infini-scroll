@@ -3,7 +3,27 @@
 
   var constructor = function (viewOptions, options) {
     var $this = this;
-    
+
+      /**
+       * Options for the base view (ScrollView)
+       */
+      this.viewOptions = {
+        layout: "vertical"
+      };
+
+      /**
+       * Options for InfiniScroll
+       *
+       * - **onNewHeight**  {Function}  - Called when a new height for the scroll view has been calculated
+       * - **onBottom**     {Function}  - Called when scrolled within the triggerAt option
+       * - **triggerAt**    {Unit}      - (percent/dp) When to trigger the 'scrollToBottom' event
+       */
+      this.options = {
+        onNewHeight: function(height, myInfiniScroll){}
+      , onBottom: function(myInfiniScroll){}
+      , triggerAt:   '90%'
+      };
+
     for (var key in viewOptions) this.viewOptions[key] = viewOptions[key];
     for (var key in options) this.options[key] = options[key];
     this.view = $ui.createScrollView(this.viewOptions);
@@ -22,28 +42,8 @@
     this.view.addEventListener('postlayout', this.onPostLayoutCurry);
     this.view.addEventListener('scroll', this.onScrollCurry);
   };
-  
-  constructor.prototype = {
-    /**
-     * Options for the base view (ScrollView)
-     */
-    viewOptions: {
-      layout: "vertical"
-    },
 
-    /**
-     * Options for InfiniScroll
-     *
-     * - **onNewHeight**  {Function}  - Called when a new height for the scroll view has been calculated
-     * - **onBottom**     {Function}  - Called when scrolled within the triggerAt option
-     * - **triggerAt**    {Unit}      - (percent/dp) When to trigger the 'scrollToBottom' event
-     *                                  Note: when using device pixel units, it represents pixels from the bottom
-     */
-    options: {
-      onNewHeight: function (height, myInfiniScroll) {},
-      onBottom: function (myInfiniScroll) {},
-      triggerAt:   '90%'
-    },
+  constructor.prototype = {
 
     /**
      * Current Height of the ScrollView
@@ -85,11 +85,11 @@
     add: function (view) {
       this.view.add(view);
     },
-    
+
     hide: function () {
       this.view.hide();
     },
-    
+
     show: function () {
       this.view.show();
     },
@@ -99,8 +99,8 @@
      * Also re-attaches the onscroll event
      */
     triggerNewHeight: function () {
-      this.triggerAt = (this.triggerIsPercentage) ? 
-      this.height * this.triggerRatio : 
+      this.triggerAt = (this.triggerIsPercentage) ?
+      this.height * this.triggerRatio :
       this.height - this.options.triggerAt;
       this.calculatingHeight = false;
       this.scrollEndTriggered = false;
@@ -130,21 +130,21 @@
       if (e.source === this.view && this.view.children.length > 0) {
         this.calculatingHeight = true;
         var children = this.view.children;
-        
+
         for (var i = this.nextChild || 0, child; i < children.length; i++) {
           child = children[i];
           this.height += parseInt(child.getSize().height) || 0;
           this.height += parseInt(child.getTop())         || 0;
           this.height += parseInt(child.getBottom())      || 0;
         }
-        
+
         this.nextChild = children.length;
         this.triggerNewHeight();
       }
     },
 
     /**
-     * Checks against scroll events and triggers and removes when necessary, 
+     * Checks against scroll events and triggers and removes when necessary,
      * such as when scrolling happens during handler removal or end triggering.
      * @private
      */
