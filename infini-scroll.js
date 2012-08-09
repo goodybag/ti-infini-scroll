@@ -4,25 +4,25 @@
   var constructor = function (viewOptions, options) {
     var $this = this;
 
-      /**
-       * Options for the base view (ScrollView)
-       */
-      this.viewOptions = {
-        layout: "vertical"
-      };
+    /**
+     * Options for the base view (ScrollView)
+     */
+    this.viewOptions = {
+      layout: "vertical"
+    };
 
-      /**
-       * Options for InfiniScroll
-       *
-       * - **onNewHeight**  {Function}  - Called when a new height for the scroll view has been calculated
-       * - **onBottom**     {Function}  - Called when scrolled within the triggerAt option
-       * - **triggerAt**    {Unit}      - (percent/dp) When to trigger the 'scrollToBottom' event
-       */
-      this.options = {
-        onNewHeight: function(height, myInfiniScroll){}
-      , onBottom: function(myInfiniScroll){}
-      , triggerAt:   '90%'
-      };
+    /**
+     * Options for InfiniScroll
+     *
+     * - **onNewHeight**  {Function}  - Called when a new height for the scroll view has been calculated
+     * - **onBottom**     {Function}  - Called when scrolled within the triggerAt option
+     * - **triggerAt**    {Unit}      - (percent/dp) When to trigger the 'scrollToBottom' event
+     */
+    this.options = {
+      onNewHeight: function(height, myInfiniScroll){}
+    , onBottom: function(myInfiniScroll){}
+    , triggerAt:   '90%'
+    };
 
     for (var key in viewOptions) this.viewOptions[key] = viewOptions[key];
     for (var key in options) this.options[key] = options[key];
