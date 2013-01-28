@@ -19,11 +19,12 @@ var myScrollView = new InfiniScroll({
       myScrollView.add(new MyDataView(data).view);
     });
   }
-})
+});
+
+// Add the scroll view to your window
+myWindow.add(myScrollView.view);
 ```
 
+In the example above, myScrollView is an instance of the InfiniScroll class, not an instance of a UI element in Titanium. So you can access the scroll view by using ```myScrollView.view```.
+
 Just add views to your InfiniScroll instance via ```myScrollView.add(myView)``` and it will re-adjust its events.
-
-## This is brand new
-
-So, we haven't tested it out in Android quite yet. We'll get there.
