@@ -180,6 +180,6 @@
       }
     }
   };
-  GB.Views.InfiniScroll = constructor;
+
   exports = constructor;
 })();
