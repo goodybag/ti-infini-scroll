@@ -181,5 +181,5 @@
     }
   };
 
-  exports = constructor;
+  module.exports = constructor;
 })();
